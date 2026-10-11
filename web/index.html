@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Model Selection Assistant</title>
+  <meta name="description" content="A rule-based decision support system and web application that recommends suitable machine learning model families for your dataset and problem.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-top">
+      <a href="#" id="home-link" class="brand">
+        <span>🤖</span>
+        <span>AI Model Selection Assistant</span>
+        <span class="brand-badge">Decision Support</span>
+      </a>
+      <div class="header-meta">
+        <a href="https://github.com/vipin280720081157-08/ai-model-selection-assistant" class="header-link" target="_blank" rel="noopener">
+          <span>GitHub</span> ↗
+        </a>
+      </div>
+    </div>
+    <ol id="steps" class="steps" aria-label="Workflow progress" hidden>
+      <li><span class="step-num">1</span>Setup</li>
+      <li><span class="step-num">2</span>Preferences</li>
+      <li><span class="step-num">3</span>Analysis</li>
+      <li><span class="step-num">4</span>Results</li>
+      <li><span class="step-num">5</span>Compare</li>
+      <li><span class="step-num">6</span>Guidance</li>
+    </ol>
+  </header>
+
+  <main>
+    <!-- 1. HOME VIEW -->
+    <section id="view-home">
+      <h2>Machine Learning Model Recommendation System</h2>
+      <p class="lead">Answer a few questions about your dataset, prediction task, and engineering priorities to receive recommended candidate model families, transparent scoring, and side-by-side trade-off comparisons.</p>
+      
+      <div class="presets-bar">
+        <span class="presets-label">⚡ Quick Presets:</span>
+        <button id="preset-churn" type="button" class="preset-chip">Customer Churn (Classification)</button>
+        <button id="preset-house" type="button" class="preset-chip">House Prices (Regression)</button>
+        <button id="preset-cluster" type="button" class="preset-chip">Customer Segments (Clustering)</button>
+        <button id="preset-fraud" type="button" class="preset-chip">Fraud Screening (Anomaly)</button>
+      </div>
+
+      <div class="panel">
+        <h3>How It Works</h3>
+        <ol class="flow">
+          <li><strong>Task & Dataset Setup:</strong> Define whether you need classification, regression, clustering, or anomaly detection along with data type and volume.</li>
+          <li><strong>Project Priorities:</strong> Specify constraints such as interpretability, training speed, low complexity, or non-linear capability.</li>
+          <li><strong>Rule-Based Analysis:</strong> Multi-criteria matching evaluates 10 model families with fully explainable scoring.</li>
+          <li><strong>Compare & Export:</strong> Inspect side-by-side trade-offs and export your guidance summary report.</li>
+        </ol>
+      </div>
+
+      <div class="actions">
+        <button id="start" class="primary" type="button">Start Custom Analysis →</button>
+      </div>
+
+      <p class="note">Rule-based decision support system. No models are trained in this browser session.</p>
+    </section>
+
+    <!-- 2. PROBLEM SETUP VIEW -->
+    <section id="view-setup" hidden>
+      <h2>Problem & Dataset Setup</h2>
+      <p class="lead">Specify your target task, feature characteristics, and dataset scale.</p>
+
+      <div class="panel">
+        <label for="problem-text"><strong>Describe Your Problem (Optional)</strong></label>
+        <p class="help">Enter your problem in plain language to automatically detect the matching task type.</p>
+        
+        <div class="example-chips">
+          <span class="help" style="margin: 0; align-self: center;">Try sample:</span>
+          <button type="button" class="chip-btn" data-query="I want to predict whether a customer will leave.">Predict churn</button>
+          <button type="button" class="chip-btn" data-query="I want to predict house prices.">Predict prices</button>
+          <button type="button" class="chip-btn" data-query="I want to group similar customers.">Group customers</button>
+          <button type="button" class="chip-btn" data-query="Find unusual transactions in my bank data.">Find anomalies</button>
+        </div>
+
+        <textarea id="problem-text" rows="2" maxlength="300" placeholder="e.g., I want to predict whether a customer will churn based on account history..."></textarea>
+        <button id="suggest" type="button">Detect Task Type</button>
+        <p id="suggest-message" class="message" role="status" hidden></p>
+      </div>
+
+      <fieldset class="panel">
+        <legend>1. Prediction Task Type</legend>
+        <div id="task-options" class="options"></div>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>2. Input Data Type</legend>
+        <div id="data-options" class="options"></div>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>3. Dataset Size</legend>
+        <div id="size-options" class="options"></div>
+      </fieldset>
+
+      <p id="setup-message" class="message error" role="alert" hidden></p>
+      
+      <div class="actions">
+        <button id="setup-next" class="primary" type="button">Next: Select Priorities →</button>
+      </div>
+    </section>
+
+    <!-- 3. PREFERENCES VIEW -->
+    <section id="view-preferences" hidden>
+      <h2>Project Priorities & Constraints</h2>
+      <p class="lead">Select the engineering priorities that matter most for this deployment.</p>
+
+      <fieldset class="panel">
+        <legend>What matters most for your model?</legend>
+        <div id="priority-options" class="options"></div>
+      </fieldset>
+
+      <p id="preferences-message" class="message error" role="alert" hidden></p>
+      
+      <div class="actions">
+        <button id="preferences-back" type="button">← Back to Setup</button>
+        <button id="analyse" class="primary" type="button">Analyze Requirements →</button>
+      </div>
+    </section>
+
+    <!-- 4. ANALYSIS TRACE VIEW -->
+    <section id="view-analysis" hidden>
+      <h2>Decision Rules Evaluation</h2>
+      <p class="lead">Transparent audit trace showing how candidate models are identified and scored.</p>
+      
+      <div id="analysis-body" class="panel"></div>
+      <p id="analysis-message" class="message info" role="status" hidden></p>
+
+      <div class="actions">
+        <button id="analysis-back" type="button">← Adjust Requirements</button>
+        <button id="analysis-next" class="primary" type="button">Show Candidate Models →</button>
+      </div>
+    </section>
+
+    <!-- 5. RESULTS VIEW -->
+    <section id="view-results" hidden>
+      <h2>Recommended Candidate Models</h2>
+      <p class="lead">Model families ranked by compatibility with your stated criteria.</p>
+      
+      <div id="results-body"></div>
+      <p id="results-message" class="message warn" role="status" hidden></p>
+
+      <div class="actions">
+        <button id="results-back" type="button">← Back to Analysis</button>
+        <button id="to-compare" type="button">Compare Models Side-by-Side</button>
+        <button id="results-final" class="primary" type="button">Final Guidance Summary →</button>
+      </div>
+    </section>
+
+    <!-- 6. COMPARISON VIEW -->
+    <section id="view-compare" hidden>
+      <h2>Side-by-Side Model Comparison</h2>
+      <p class="lead">Select two or more models to inspect detailed architectural trade-offs.</p>
+
+      <fieldset class="panel">
+        <legend>Select Candidate Models to Compare</legend>
+        <div id="compare-choices" class="options"></div>
+      </fieldset>
+
+      <p id="compare-message" class="message error" role="alert" hidden></p>
+      
+      <div class="actions">
+        <button id="compare-run" class="primary" type="button">Update Comparison Table</button>
+      </div>
+
+      <div id="compare-table" class="table-wrap"></div>
+
+      <div class="actions">
+        <button id="compare-back" type="button">← Back to Results</button>
+        <button id="compare-final" class="primary" type="button">Final Guidance Summary →</button>
+      </div>
+    </section>
+
+    <!-- 7. FINAL GUIDANCE VIEW -->
+    <section id="view-final" hidden>
+      <h2>Guidance Summary & Next Steps</h2>
+      <p class="lead">Executive summary of recommended approaches, critical trade-offs, and implementation guidelines.</p>
+
+      <div id="final-body" class="panel"></div>
+
+      <div class="actions">
+        <button id="final-back" type="button">← Back to Results</button>
+        <button id="copy-summary" type="button">📋 Copy Summary</button>
+        <button id="print" type="button">🖨️ Print / Save as PDF</button>
+        <button id="restart" class="primary" type="button">🔄 Start New Analysis</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>AI Model Selection Assistant &bull; Rule-based Decision Support</p>
+    <p>Zero external runtime dependencies &bull; Base R & Vanilla Web</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
