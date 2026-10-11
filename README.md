@@ -3,7 +3,6 @@
 [![R](https://img.shields.io/badge/R-Base%20R%20(4.0%2B)-276DC3?logo=r&logoColor=white)](https://www.r-project.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)](#)
 [![Frontend](https://img.shields.io/badge/Frontend-HTML5%20%2F%20CSS3-E34F26?logo=html5&logoColor=white)](#)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
 
 A rule-based decision support system and interactive web tool that evaluates machine learning task requirements, dataset characteristics, and engineering constraints to recommend and rank candidate ML model families with explainable scoring.
 
